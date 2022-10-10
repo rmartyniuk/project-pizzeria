@@ -3,6 +3,7 @@
 {
   'use strict';
 
+  //Lokalizacja script w html, w którym znajdują się szablony, po identyfikatorze id.
   const select = {
     templateOf: {
       menuProduct: '#template-menu-product',
@@ -49,13 +50,23 @@
   };
 
   const templates = {
+    //tworzy szablon o nazwie menuProduct i wyszukuje contenera z szablonem po ustalonej w stałej select właściwości menuProduct i pobiera informacje o jego budowie
     menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
 
   const app = {
     initMenu: function () {
-      const testProduct = new Product();
-      console.log('testProduct', testProduct);
+      const thisApp = this;
+      console.log('thisApp.data:', thisApp.data);
+      for (let productData in thisApp.data.products) {
+        new Product(productData, thisApp.data.products[productData]);
+        //czy tutaj muszę dostać się do wartości?
+      }
+    },
+    initData: function () {
+      const thisApp = this;
+
+      thisApp.data = dataSource;
     },
     init: function () {
       const thisApp = this;
@@ -64,18 +75,39 @@
       console.log('classNames:', classNames);
       console.log('settings:', settings);
       console.log('templates:', templates);
+      thisApp.initData();
       thisApp.initMenu();
     },
   };
 
   class Product {
-    constructor() {
+    constructor(id, data) {
       const thisProduct = this;
+      thisProduct.id = id;
+      thisProduct.data = data;
+      thisProduct.renderInMenu();
       console.log('new Product:', thisProduct);
     }
-  };
+    renderInMenu() {
+      const thisProduct = this;
 
+      /*generate HTML based on template- wygenerowanie kodu na podstawie szablonu*/
+      const generatedHTML = templates.menuProduct(thisProduct.data);
+      console.log('generatedHTML', generatedHTML);
 
+      /*create element using utils.createElementFromHTML- utworzenie elementu za pomocą utils.createElementFromHTML*/
+      thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+
+      /*find menu container- znalezienie kontenera dla menu*/
+      const menuContainer = document.querySelector(select.containerOf.menu);
+      console.log('menuContainer', menuContainer);
+
+      /*add element to menu- dodanie elementu do menu*/
+
+      menuContainer.appendChild(thisProduct.element);
+
+    }
+  }
 
 
 
