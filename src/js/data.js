@@ -23,10 +23,23 @@ dataSource.products = {
         label: 'Coffee type',
         type: 'radios',
         options: {
-          latte: { label: 'Latte', price: 1, default: true },
-          cappuccino: { label: 'Cappuccino', price: 1 },
-          espresso: { label: 'Espresso', price: 1 },
-          macchiato: { label: 'Macchiato ', price: 1 },
+          latte: {
+            label: 'Latte',
+            price: 1,
+            default: true
+          },
+          cappuccino: {
+            label: 'Cappuccino',
+            price: 1
+          },
+          espresso: {
+            label: 'Espresso',
+            price: 1
+          },
+          macchiato: {
+            label: 'Macchiato ',
+            price: 1
+          },
         },
       },
     },
@@ -51,23 +64,20 @@ dataSource.products = {
         label: 'Sauce',
         type: 'radios',
         options: {
-          tomato: { label: 'Tomato', price: 0, default: true },
-          cream: { label: 'Sour cream', price: 2 },
+          tomato: { 
+            label: 'Tomato', 
+            price: 0, 
+            default: true },
+          cream: { 
+            label: 'Sour cream', 
+            price: 2 },
         },
       },
       toppings: {
         label: 'Toppings',
         type: 'checkboxes',
         options: {
-
-
-
-
           olives: { label: 'Olives', price: 2, default: true },
-
-
-
-
           redPeppers: { label: 'Red peppers', price: 2, default: true },
           greenPeppers: { label: 'Green peppers', price: 2, default: true },
           mushrooms: { label: 'Mushrooms', price: 2, default: true },
