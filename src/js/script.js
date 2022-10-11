@@ -86,6 +86,7 @@
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.renderInMenu();
+      thisProduct.initAccordion();
       console.log('new Product:', thisProduct);
     }
     renderInMenu() {
@@ -107,7 +108,36 @@
       menuContainer.appendChild(thisProduct.element);
 
     }
+    initAccordion() {
+      const thisProduct = this;
+
+      /* find the clickable trigger (the element that should react to clicking) */
+
+      //znalezienie elementu, który ma reagować na kliknięcie- header
+      //dlaczego niezbędne jest wpisanie w tym miejscu thisProduct.element??
+      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+
+      /* START: add event listener to clickable trigger on event click -dodaj zdarzenie po kliknięciu w wyzwalacz- header */
+      clickableTrigger.addEventListener('click', function (event) {
+
+        /* prevent default action for event */
+        event.preventDefault();
+
+        /* find active product (product that has active class). Odnajdź elementy, które posaidają klasę active- patrz szablon */
+        const activeProduct = document.querySelector(select.all.menuProductsActive);
+
+        /* if there is active product and it's not thisProduct.element, remove class active from it. Jak czytać tą poniższą linijkę kodu??? */
+        if (activeProduct != thisProduct.element && activeProduct != null) {
+          activeProduct.classList.remove('active');
+        }
+
+        /* toggle active class on thisProduct.element */
+        thisProduct.element.classList.toggle('active');
+      });
+
+    }
   }
+
 
 
 
