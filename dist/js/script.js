@@ -44,8 +44,8 @@
   const settings = {
     amountWidget: {
       defaultValue: 1,
-      defaultMin: 1,
-      defaultMax: 9,
+      defaultMin: 0,
+      defaultMax: 10,
     }
   };
 
@@ -62,7 +62,7 @@
       console.log('thisWidget', thisWidget);
       console.log('constructor arguments', element);
       thisWidget.getElements(element);
-      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.setValue(thisWidget.input.value || settings.amountWidget.defaultValue);
       thisWidget.initActions();
     }
     getElements(element) {
@@ -76,20 +76,26 @@
 
       thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
     }
+
+    announce() {
+      const thisWidget = this;
+
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
+    }
+
     setValue(value) {
       const thisWidget = this;
       const newValue = parseInt(value);
       //parseInt przekształca tekst w liczbę
 
-      thisWidget.value = newValue;
-      thisWidget.input.value = thisWidget.value;
-
       /*TODO: Add validation*/
-      if (thisWidget.value !== newValue && !isNaN(newValue) && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax) {
+      if (newValue !== thisWidget.value && !isNaN(newValue) && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax) {
         thisWidget.value = newValue;
       }
       thisWidget.input.value = thisWidget.value;
-      console.log('newValue', newValue);
+
+      thisWidget.announce();
     }
     initActions() {
       const thisWidget = this;
@@ -287,6 +293,9 @@
           }
         }
       }
+      //multiply price by amount
+      price *= thisProduct.amountWidget.value;
+
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
       thisProduct.price = price;
@@ -296,6 +305,9 @@
       //ma tworzyć nową instancję klasy AmoundWidget i zapisywać ją do właściwości produktu
       const thisProduct = this;
       thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+      thisProduct.amountWidgetElem.addEventListener('updated', function () {
+        thisProduct.processOrder();
+      });
     }
   }
 
