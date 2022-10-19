@@ -160,9 +160,16 @@
     getElements(element) {
       const thisCart = this;
       thisCart.dom = {};
+      //tworzę obiekt
+
       thisCart.dom.wrapper = element;
+      //...dodaję wrapper
+
       console.log('elementCart', thisCart.dom.wrapper);
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      //odnalezienie klikalnego elem
+
+      thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
     }
 
     initActions() {
@@ -170,6 +177,17 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function () {
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
+    }
+
+    add(menuProduct) {
+      const thisCart = this;
+      console.log('adding product', menuProduct);
+
+      const generatedHTML = templates.cartProduct(menuProduct);
+
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+
+      thisCart.dom.productList.appendChild(generatedDOM);
     }
   }
 
@@ -204,6 +222,8 @@
       thisApp.cart = new Cart(cartElem);
     }
   };
+
+
 
   class Product {
     constructor(id, data) {
@@ -268,9 +288,7 @@
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
-
       //znalezienie elementu, który ma reagować na kliknięcie- header
-      //dlaczego niezbędne jest wpisanie w tym miejscu thisProduct.element??
       // const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
       /* START: add event listener to clickable trigger on event click -dodaj zdarzenie po kliknięciu w wyzwalacz- header */
@@ -309,6 +327,7 @@
       thisProduct.cartButton.addEventListener('click', function (event) {
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
 
@@ -360,6 +379,10 @@
       //multiply price by amount
       price *= thisProduct.amountWidget.value;
 
+      //add new property "priceSingle" to thisProduct
+
+      thisProduct.priceSingle = price;
+
       // update calculated price in the HTML
       thisProduct.priceElem.innerHTML = price;
       thisProduct.price = price;
@@ -372,6 +395,60 @@
       thisProduct.amountWidgetElem.addEventListener('updated', function () {
         thisProduct.processOrder();
       });
+    }
+
+    addToCart() {
+      const thisProduct = this;
+      app.cart.add(thisProduct.prepareCartProduct());
+    }
+
+    prepareCartProduct() {
+      const thisProduct = this;
+
+      const productSummary = {
+        //M- skąd wziąć te informacje???
+        id: thisProduct.id,
+        name: thisProduct.data.name,
+
+        //z metody processOrder
+        amount: thisProduct.amountWidget.value,
+        priceSingle: thisProduct.priceSingle,
+
+        price: thisProduct.price,
+        params: thisProduct.prepareCartProductParams(),
+      };
+      return productSummary;
+    }
+
+    prepareCartProductParams() {
+      // zadaniem powinno być przejście po wszystkich kategoriach produktu, następnie po ich opcjach, sprawdzenie czy są one wybrane i wygenerowania podsumowania w formie małego obiektu
+      const thisProduct = this;
+
+
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      const params = {};
+
+      // for every category (param)...
+      for (let paramId in thisProduct.data.params) {
+        // determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... }
+        const param = thisProduct.data.params[paramId];
+
+        params[paramId] = {
+          label: param.label,
+          options: {}
+        };
+
+        // for every option in this category
+        for (let optionId in param.options) {
+          const option = param.options[optionId];
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+          if (optionSelected) {
+            params[paramId].options[optionId] = option.label;
+          }
+        }
+      }
+      return params;
     }
   }
 
