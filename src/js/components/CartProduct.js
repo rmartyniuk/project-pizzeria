@@ -6,13 +6,13 @@ class CartProduct {
     const thisCartProduct = this;
 
     thisCartProduct.id = menuProduct.id,
-      thisCartProduct.name = menuProduct.name,
-      thisCartProduct.amount = menuProduct.amount,
-      thisCartProduct.priceSingle = menuProduct.priceSingle,
-      thisCartProduct.price = menuProduct.price,
-      thisCartProduct.params = menuProduct.params,
+    thisCartProduct.name = menuProduct.name,
+    thisCartProduct.amount = menuProduct.amount,
+    thisCartProduct.priceSingle = menuProduct.priceSingle,
+    thisCartProduct.price = menuProduct.price,
+    thisCartProduct.params = menuProduct.params,
 
-      thisCartProduct.getElements(element);
+    thisCartProduct.getElements(element);
     thisCartProduct.initAmountWidget();
     thisCartProduct.initActions();
   }
