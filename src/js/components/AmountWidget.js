@@ -1,62 +1,56 @@
 import { settings, select } from '../settings.js';
 
+import BaseWidget from './BaseWidget.js';
 
-class AmountWidget {
+//klasa AmountWidget jest rozszerzeniem klasy BaseWidget (extens)
+class AmountWidget extends BaseWidget {
   constructor(element) {
+
+    //Pierwszą rzeczą przy wywołaniu konstruktora klasy dziedziczącej jest wywołanie konstruktora klasy nadrzednej, co robi się za pomocą wyrażenia "super". WrapperElement jes przekazany do konstruktora klasy AmountWidget jako "element", drugi argument to początkowa wartość widgetu
+    super(element, settings.amountWidget.defaultValue);
     //'elementem' ma być div
     const thisWidget = this;
 
     thisWidget.getElements(element);
-    thisWidget.setValue(thisWidget.input.value || settings.amountWidget.defaultValue);
+
     thisWidget.initActions();
   }
-  getElements(element) {
+  getElements() {
     const thisWidget = this;
 
-    thisWidget.element = element;
+    thisWidget.dom.input = thisWidget.dom.wrapper.querySelector(select.widgets.amount.input);
 
-    thisWidget.input = thisWidget.element.querySelector(select.widgets.amount.input);
+    thisWidget.dom.linkDecrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkDecrease);
 
-    thisWidget.linkDecrease = thisWidget.element.querySelector(select.widgets.amount.linkDecrease);
-
-    thisWidget.linkIncrease = thisWidget.element.querySelector(select.widgets.amount.linkIncrease);
+    thisWidget.dom.linkIncrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkIncrease);
   }
 
-  announce() {
+  isValid(value) {
+    //!isNAN- czy value nie jest nie liczbą?
+    return !isNaN(value)
+      && value >= settings.amountWidget.defaultMin
+      && value <= settings.amountWidget.defaultMax;
+  }
+
+  renderValue() {
     const thisWidget = this;
 
-    const event = new CustomEvent('updated', {
-      bubbles: true
-    });
-    thisWidget.element.dispatchEvent(event);
+    thisWidget.dom.input.value = thisWidget.value;
   }
 
-  setValue(value) {
-    const thisWidget = this;
-    const newValue = parseInt(value);
-    //parseInt przekształca tekst w liczbę
-
-    /*TODO: Add validation*/
-    if (newValue !== thisWidget.value && !isNaN(newValue) && newValue >= settings.amountWidget.defaultMin && newValue <= settings.amountWidget.defaultMax) {
-      thisWidget.value = newValue;
-    }
-    thisWidget.input.value = thisWidget.value;
-
-    thisWidget.announce();
-  }
   initActions() {
     const thisWidget = this;
 
-    thisWidget.input.addEventListener('change', function () {
-      thisWidget.setValue(thisWidget.input.value);
+    thisWidget.dom.input.addEventListener('change', function () {
+      thisWidget.value = thisWidget.dom.input.value;
     });
 
-    thisWidget.linkDecrease.addEventListener('click', function (event) {
+    thisWidget.dom.linkDecrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(thisWidget.value - 1);
     });
 
-    thisWidget.linkIncrease.addEventListener('click', function (event) {
+    thisWidget.dom.linkIncrease.addEventListener('click', function (event) {
       event.preventDefault();
       thisWidget.setValue(thisWidget.value + 1);
     });
