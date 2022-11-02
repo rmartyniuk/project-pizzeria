@@ -100,15 +100,6 @@ const app = {
     // console.log('thisApp.data', JSON.stringifi(thisApp.data));
   },
 
-  init: function () {
-    const thisApp = this;
-
-    thisApp.initPages();
-    thisApp.initData();
-    thisApp.initCart();
-    thisApp.initBooking();
-  },
-
   initCart: function () {
     const thisApp = this;
     const cartElem = document.querySelector(select.containerOf.cart);
@@ -120,13 +111,21 @@ const app = {
       app.cart.add(event.detail.product);
     });
   },
-
+  
   initBooking: function () {
     const thisApp = this;
     const bookingContainer = document.querySelector(select.containerOf.booking);
     thisApp.booking = new Booking(bookingContainer);
-  }
+  },
 
+  init: function () {
+    const thisApp = this;
+
+    thisApp.initPages();
+    thisApp.initData();
+    thisApp.initCart();
+    thisApp.initBooking();
+  },
 };
 
 app.init();
