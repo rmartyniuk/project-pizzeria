@@ -10,12 +10,14 @@ class BaseWidget {
     thisWidget.correctValue = initialValue;
   }
 
+  //
   get value() {
     const thisWidget = this;
 
     return thisWidget.correctValue;
   }
 
+  //
   set value(value) {
     const thisWidget = this;
     const newValue = thisWidget.parseValue(value);

@@ -6,7 +6,7 @@ import BaseWidget from './BaseWidget.js';
 class AmountWidget extends BaseWidget {
   constructor(element) {
 
-    //Pierwszą rzeczą przy wywołaniu konstruktora klasy dziedziczącej jest wywołanie konstruktora klasy nadrzednej, co robi się za pomocą wyrażenia "super". WrapperElement jes przekazany do konstruktora klasy AmountWidget jako "element", drugi argument to początkowa wartość widgetu
+    //Pierwszą rzeczą przy wywołaniu konstruktora klasy dziedziczącej/pochodnej(AmountWidget) jest wywołanie konstruktora klasy nadrzednej/bazowej(BaseWidget), co robi się za pomocą wyrażenia "super". WrapperElement jes przekazany do konstruktora klasy AmountWidget jako "element", drugi argument to początkowa wartość widgetu
     super(element, settings.amountWidget.defaultValue);
     //'elementem' ma być div
     const thisWidget = this;
