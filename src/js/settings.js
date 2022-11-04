@@ -53,7 +53,7 @@ export const select = {
     phone: '.order-confirmation [name="phone"]',
     address: '.order-confirmation [name="address"]',
     starters: '[name="starter"]',
-    bookingSubmit: '.booking-form',
+    submit: '.booking-form',
   },
 
   nav: {
