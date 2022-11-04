@@ -271,6 +271,13 @@ class Booking {
     thisBooking.dom.hourPicker.addEventListener('click', function () { });
 
     thisBooking.dom.wrapper.addEventListener('updated', function () {
+      for (let table of thisBooking.dom.tables) {
+        table.classList.remove(classNames.booking.tableSelected);
+      }
+      thisBooking.updateDOM();
+    });
+
+    thisBooking.dom.wrapper.addEventListener('updated', function () {
       thisBooking.updateDOM();
     });
 
@@ -278,7 +285,7 @@ class Booking {
       thisBooking.initTables(event);
     });
 
-    thisBooking.dom.form.addEventListener('submit', function (event) {
+    thisBooking.dom.tablesContainer.addEventListener('submit', function (event) {
       event.preventDefault();
       thisBooking.sendBooking();
     });
