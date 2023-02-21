@@ -48,28 +48,28 @@ class Booking {
         + '/' + settings.db.events
         + '?' + params.eventsRepeat.join('&'),
     };
-
-
+    //promise tworzy tablice
     Promise.all([
       fetch(urls.booking),
       fetch(urls.eventsCurrent),
       fetch(urls.eventsRepeat),
     ])
       .then(function (allResponse) {
+        //przypisanie tablic
         const bookingsResponse = allResponse[0];
         console.log('bookingsResponse', bookingsResponse);
         const eventsCurrentResponse = allResponse[1];
         const eventsRepeatResponse = allResponse[2];
         return Promise.all([
+          //prośba o konwersję na json w formie tablic
           bookingsResponse.json(),
           eventsCurrentResponse.json(),
           eventsRepeatResponse.json(),
         ]);
       })
+      //Odpowiedź jeśli true
+      //zapis nowy- destrukturyzacja
       .then(function ([bookings, eventsCurrent, eventsRepeat]) {
-        // console.log('bookings', bookings);
-        // console.log('eventsCurrent', eventsCurrent);
-        // console.log('eventsRepeat', eventsRepeat);
         thisBooking.parseData(bookings, eventsCurrent, eventsRepeat);
       });
   }

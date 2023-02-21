@@ -43,17 +43,11 @@ class Product {
     thisProduct.dom = {};
 
     thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-
     thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
-
     thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
-
     thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
-
     thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
-
     thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-
     thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
   }
 
@@ -73,7 +67,12 @@ class Product {
       /* find active product (product that has active class). Odnajdź elementy, które posaidają klasę active- patrz szablon */
       const activeProduct = document.querySelector(select.all.menuProductsActive);
 
-      /* if there is active product and it's not thisProduct.element, remove class active from it. Jak czytać tą poniższą linijkę kodu??? */
+      /* if there is active product and it's not thisProduct.element, remove class active from it. 
+      
+      
+      
+      
+      ????????????Jak czytać tą poniższą linijkę kodu??? */
       if (activeProduct != thisProduct.element && activeProduct != null) {
         activeProduct.classList.remove('active');
       }

@@ -54,7 +54,6 @@ const app = {
       page.classList.toggle(classNames.pages.active, page.id == pageId);
       // czy klasa zostanie dodana czy nie może być kontrolowane za pomocą drugiego argumentu
     }
-
     /* add class "active" to matching links, remove from non-matching */
     for (let link of thisApp.navLinks) {
       link.classList.toggle(
@@ -62,7 +61,6 @@ const app = {
         link.getAttribute('href') == '#' + pageId
       );
     }
-
   },
 
   initMenu: function () {
