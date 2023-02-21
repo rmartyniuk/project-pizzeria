@@ -20,7 +20,7 @@ h4 {
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
-  gap: ($base-size / 2);
+  gap: ($base-size * 0.5);
 }
 
 .box {
@@ -83,7 +83,7 @@ h4 {
   color: $color-light;
   text-align: center;
   flex: 100%;
-  margin: ($base-size / 2) 0;
+  margin: ($base-size * 0.5) 0;
   padding: ($base-size * 2) 0;
 }
 
